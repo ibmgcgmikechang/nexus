@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+ name: nexus3-docker
+labels:
+ app: nexus3
+ app.kubernetes.io/component: nexus3
+ app.kubernetes.io/instance: nexus3
+selfLink: /api/v1/namespaces/nexus/services/nexus3
+spec:
+ ports:
+ - name: 8082-tcp
+   port: 8082
+   protocol: TCP
+   targetPort: 8082
+selector:
+deploymentconfig: nexus3
+sessionAffinity: None
+type: ClusterIP

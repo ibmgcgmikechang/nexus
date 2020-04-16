@@ -1,0 +1,28 @@
+oc new-project nexus
+oc create -f nexus3-data.yaml
+oc new-app sonatype/nexus3
+oc expose svc/nexus3
+oc get dc
+
+Modify the nexus deploymentconfig to use PVC storage so that all the repository
+content would be retained after reboot. Command : 
+oc edit deploymentconfig nexus3
+#### modify nexus dc to use PVC ####
+volumes:
+- name: nexus3-volume-1
+  persistentVolumeClaim:
+    cliamName: nexus3-data
+
+#############################
+Execute “oc get pod” to ensure all the pod is up and running
+oc get pods
+
+Execute “oc exec nexus3-3-vmtlg cat /nexus-data/admin.password” to get the
+nexus admin password.
+oc exec nexus3-3-vmtlg cat /nexus-data/admin.password
+
+##########################
+Open an browser and pointing from route ""
+login by user: admin
+password : input from "oc exec nexus3-3-vmtlg cat /nexus-data/admin.password"
+
